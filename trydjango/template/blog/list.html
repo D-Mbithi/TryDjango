@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  {% for post in posts  %}
+    <article class="post">
+      <header class="article-header">
+        <div class="articler-header-title">
+          <h2>{{ post.title }}</h2>
+        </div>
+        <div class="articler-header-meta">
+          <p>Author</p>
+          <p>{{ post.timestamp }}</p>
+        </div>
+      </header>
+      <section class="article-body">
+        {{ post.post|truncatewords:50|linebreaks }}
+      </section>
+      <footer class="article-footer">
+        <div class="article-footer-social">
+
+        </div>
+        <div class="article-footer-comments">
+
+        </div>
+      </footer>
+    </article>
+  {% endfor %}
+</div>
+{% endblock %}
