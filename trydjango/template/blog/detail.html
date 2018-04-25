@@ -1,1 +1,35 @@
 {% extends "base.html" %}
+
+{% block content %}
+{% include "nav.html" %}
+<div class="container-fluid">
+<article class="post">
+  <header class="article-header">
+    <div class="post-header-img">
+      <img src="http://localhost:8000/media/img-3.jpg" alt="post image" class="img-fluid" />
+    </div>
+    <div class="articler-header-title">
+      <h2>{{ instance.title }}</h2>
+    </div>
+    <div class="article-header-meta">
+      <p>Author</p>
+      <p>{{ instance.timestamp.date }}</p>
+      <p>{{ instance.timestamp.time }}</p>
+    </div>
+  </header>
+  <section class="article-body">
+    <div class="container">
+      {{ instance.post }}
+    </div>
+  </section>
+  <footer class="article-footer">
+    <div class="article-footer-social">
+
+    </div>
+    <div class="article-footer-comments">
+
+    </div>
+  </footer>
+</article>
+</div>
+{% endblock %}

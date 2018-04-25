@@ -3,9 +3,9 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^$', views.list_post, name='list_post'),
-    url(r'^create$', views.create_post, name='create_post'),
-    url(r'^update$', views.update_post, name='update_post'),
-    url(r'^delete$', views.delete_post, name='delete_post'),
-    url(r'^detail$', views.detail_post, name='detail_post'),
+    url(r'^$', views.list_post, name='list'),
+    url(r'^create$', views.create_post, name='create'),
+    url(r'^(?P<pk>\d+)/$', views.detail_post, name='detail'),
+    url(r'^(?P<pk>\d+)/update$', views.update_post, name='update'),
+    url(r'^(?P<pk>\d+)/delete$', views.delete_post, name='delete'),
 ]
