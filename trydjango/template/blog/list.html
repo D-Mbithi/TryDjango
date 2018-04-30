@@ -1,37 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% include "nav.html" %}
 <div class="wrapper container">
   <main>
   {% for post in posts  %}
     <article class="blog-post">
-      <header class="post-header">
+      <header class="article-header">
         <div class="post-header-title">
           <h2>
-            <a href="{% url 'blog:detail' pk=post.pk %}">
+            <a href="{{ post.get_absolute_url }}">
               {{ post.title }}
             </a>
           </h2>
         </div>
         <div class="article-header-meta">
           <p>Author</p>
-          <p>{{ post.timestamp.date }}</p>
-          <p>{{ post.timestamp.time }}</p>
+          <small>{{ post.timestamp.date }}</small>
+          <small>{{ post.timestamp.time }}</small>
         </div>
       </header>
+      <section class="post-image">
+        {% if post.images %}
+          <img src="{{ post.images.url }}" alt="" class="img-fluid">
+        {% endif %}
+      </section>
       <section class="article-body">
         {{ post.post|truncatewords:50|linebreaks }}
       </section>
       <footer class="article-footer">
         <div class="article-footer-social">
-
+            <a href="{{ post.get_absolute_url }}">Read More </a>
         </div>
         <div class="article-footer-comments">
 
         </div>
       </footer>
     </article>
+    <hr>
   {% endfor %}
 </main>
 <aside>

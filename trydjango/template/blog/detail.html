@@ -1,35 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% include "nav.html" %}
-<div class="container-fluid">
-<article class="post">
-  <header class="article-header">
-    <div class="post-header-img">
-      <img src="http://localhost:8000/media/img-3.jpg" alt="post image" class="img-fluid" />
-    </div>
+
+<article class="blog-post container">
+{# post header section #}
+  <header class="article-header container">
     <div class="articler-header-title">
-      <h2>{{ instance.title }}</h2>
+    <h2>{{ instance.title }}</h2>
     </div>
     <div class="article-header-meta">
-      <p>Author</p>
-      <p>{{ instance.timestamp.date }}</p>
-      <p>{{ instance.timestamp.time }}</p>
+      {% if user.get_full_name %}
+        <p class="text-capitalize">{{ user.get_full_name }}</p>
+      {% endif %}
+      <small>{{ instance.timestamp.date }}</small>
+      <small>{{ instance.timestamp.time }}</small>
     </div>
   </header>
+
+{# images post section #}
+  {% if instance.images %}
+    <section class="post-image">
+      <img src="{{ instance.images.url }}" alt="post image" class="img-thumbnail" />
+    </section>
+  {% endif %}
+
+  {# post body section #}
   <section class="article-body">
-    <div class="container">
-      {{ instance.post }}
+    <div class="post-container">
+      <p>{{ instance.post }}</p>
+      <p>{{ instance.post }}</p>
+      <p>{{ instance.post }}</p>
+      <p>{{ instance.post }}</p>
     </div>
   </section>
+  <div class="hr container" style="padding: 0 100px;">
+    <hr>
+  </div>
+  {# footer section #}
   <footer class="article-footer">
-    <div class="article-footer-social">
-
-    </div>
-    <div class="article-footer-comments">
-
+    <div class="container">
+      <div class="article-footer-social">
+      </div>
+      <div class="article-footer-comments">
+      </div>
     </div>
   </footer>
 </article>
-</div>
 {% endblock %}

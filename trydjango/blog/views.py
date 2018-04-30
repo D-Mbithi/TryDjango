@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, Http404
 from blog.models import Post
 from blog.forms import PostForm
 from django.contrib import messages
@@ -30,6 +30,8 @@ def list_post(request):
 
 
 def create_post(request):
+    if not request.user.is_staff or not request.user.is_admin:
+        raise Http404
     if request.method == 'POST':
         form = PostForm(request.POST or None, request.FILES or None)
         if form.is_valid():
@@ -45,14 +47,18 @@ def create_post(request):
     return render(request, template, context)
 
 
-def delete_post(request, pk):
-    instance = get_object_or_404(Post, pk=pk)
+def delete_post(request, slug):
+    if not request.user.is_staff or not request.user.is_admin:
+        raise Http404
+    instance = get_object_or_404(Post, slug=slug)
     instance.delete()
     return redirect('/blog/')
 
 
-def update_post(request, pk):
-    instance = get_object_or_404(Post, pk=pk)
+def update_post(request, slug):
+    if not request.user.is_staff or not request.user.is_admin:
+        raise Http404
+    instance = get_object_or_404(Post, slug=slug)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
@@ -69,9 +75,8 @@ def update_post(request, pk):
     return render(request, template, context)
 
 
-def detail_post(request, pk=None):
-    instance = get_object_or_404(Post, pk=pk)
-
+def detail_post(request, slug=None):
+    instance = get_object_or_404(Post, slug=slug)
     template = 'blog/detail.html'
     context = {
         'instance': instance
