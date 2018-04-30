@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from blog import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.list_post, name='list'),
     url(r'^admin/', admin.site.urls),
     url(r'^blog/', include('blog.urls', namespace='blog'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
