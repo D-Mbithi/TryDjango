@@ -30,7 +30,7 @@ def list_post(request):
 
 
 def create_post(request):
-    if not request.user.is_staff or not request.user.is_admin:
+    if not request.user.is_staff or not request.user.is_active:
         raise Http404
     if request.method == 'POST':
         form = PostForm(request.POST or None, request.FILES or None)
@@ -48,7 +48,7 @@ def create_post(request):
 
 
 def delete_post(request, slug):
-    if not request.user.is_staff or not request.user.is_admin:
+    if not request.user.is_staff or not request.user.is_active:
         raise Http404
     instance = get_object_or_404(Post, slug=slug)
     instance.delete()
@@ -56,7 +56,7 @@ def delete_post(request, slug):
 
 
 def update_post(request, slug):
-    if not request.user.is_staff or not request.user.is_admin:
+    if not request.user.is_staff or not request.user.is_active:
         raise Http404
     instance = get_object_or_404(Post, slug=slug)
     if request.method == 'POST':
