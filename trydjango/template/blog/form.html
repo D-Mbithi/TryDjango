@@ -1,12 +1,25 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
+{% block pagedown %}
+    {{ form.media }}
+{% endblock %}
+
 {% block content %}
 <div class="container">
-
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" name="submit" value="Submit" class="btn btn-outline-dark">
-  </form>
+    <div class="content">
+        <div class="content-preview">
+            <h2 class="preview-title"></h2>
+            <p class="preview-content"></p>
+        </div>
+        <div class="content-edit">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input type="submit" name="submit" value="Submit" class="btn btn-outline-dark">
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

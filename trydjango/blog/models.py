@@ -1,9 +1,13 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save
+from django.contrib.contenttypes.models import ContentType
 from django.utils.text import slugify
 from django.conf import settings
 from django.utils import timezone
+from markdown_deux import markdown
+from django.utils.safestring import mark_safe
+from comments.models import Comment
 
 
 # Create your models here.
@@ -15,7 +19,7 @@ class PostManager(models.Manager):
 
 
 class Post(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     images = models.FileField(
@@ -37,8 +41,22 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_markdown(self):
+        content = self.post
+        return mark_safe(markdown(content))
+
     def get_absolute_url(self):
         return reverse("blog:detail", kwargs={'slug': self.slug})
+
+    @property
+    def comment(self):
+        qs = Comment.objects.filter_by_instance(self)
+        return qs
+
+    @property
+    def get_content_type(self):
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return content_type
 
 
 def create_slug(instance, new_slug=None):

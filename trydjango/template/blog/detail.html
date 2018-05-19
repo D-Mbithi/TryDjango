@@ -1,7 +1,8 @@
-{% extends "base.html" %}
+ {% extends "base.html" %}
+
+{% load crispy_forms_tags %}
 
 {% block content %}
-
 <article class="blog-post container">
 {# post header section #}
   <header class="article-header container">
@@ -28,7 +29,9 @@
   <section class="article-body">
     <div class="post-container">
         <div class="content-markdown">
-            {{ instance.post }}
+            <p class="d-flex">
+                {{ instance.get_markdown }}
+            </p>
         </div>
     </div>
   </section>
@@ -37,11 +40,6 @@
   </div>
   {# footer section #}
   <footer class="article-footer">
-    <div class="container">
-      </div>
-      <div class="article-footer-comments">
-      </div>
-    </div>
     <div class="comments">
         <div class="article-footer-social">
             <div class="fb-like"
@@ -53,5 +51,27 @@
         <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="5"></div>
     </div>
   </footer>
+  <div class="comment">
+     <h2>
+        Comments
+    </h2>
+      <div>
+          {% for comment in comments  %}
+            <blockquote class="blockquote">
+                <p class="mb-0">{{ comment.comment }}</p>
+                <footer class="blockquote-footer">
+                    {{ comment.user }} | {{ comment.timestamp|timesince }}
+                </footer>
+            </blockquote>
+          {% endfor %}
+      </div>
+      <div class="comment-form">
+          <form method="post" action=".">
+              {% csrf_token %}
+              {{ comment_form|crispy }}
+              <button type="submit" class="btn btn-secondary">Submit</button>
+          </form>
+      </div>
+  </div>
 </article>
 {% endblock %}
